@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compression Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .compression-tool {
+            text-align: center;
+        }
+
+        #image-input {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+
+        #compression-level {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+
+        #compress-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #compress-btn:hover {
+            background-color: #3e8e41;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        #download-link {
+            margin-top: 20px;
+            text-decoration: none;
+            color: #4CAF50;
+        }
+
+        .ads {
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+    <meta name="description" content="Compress images online for free. Reduce image size while maintaining quality.">
+    <meta name="keywords" content="image compression, image optimization, compress images online">
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center;">Image Compression Tool</h1>
+        <section class="compression-tool">
+            <input type="file" id="image-input" accept="image/*">
+            <select id="compression-level">
+                <option value="low">Low (20% compression)</option>
+                <option value="medium">Medium (50% compression)</option>
+                <option value="high">High (80% compression)</option>
+            </select>
+            <button id="compress-btn">Compress Image</button>
+            <canvas id="canvas"></canvas>
+            <a id="download-link" download="compressed-image.jpg">Download Compressed Image</a>
+        </section>
+        <section class="ads">
+            <!-- Google AdSense ad code will be inserted here -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-YOUR_ADSENSE_AD_UNIT_ID"
+                 data-ad-slot="YOUR_ADSENSE_AD_SLOT_ID"
+                 data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </section>
+    </div>
+    <script>
+        const imageInput = document.getElementById('image-input');
+        const compressionLevel = document.getElementById('compression-level');
+        const compressBtn = document.getElementById('compress-btn');
+        const canvas = document.getElementById('canvas');
+        const downloadLink = document.getElementById('download-link');
+
+        compressBtn.addEventListener('click', () => {
+            const imageFile = imageInput.files[0];
+            const compression = compressionLevel.value;
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                const img = new Image();
+                img.onload = () => {
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    let quality;
+                    switch (compression) {
+                        case 'low':
+                            quality = 0.8;
+                            break;
+                        case 'medium':
+                            quality = 0.5;
+                            break;
+                        case 'high':
+                            quality = 0.2;
+                            break;
+                        default:
+                            quality = 0.5;
+                    }
+
+                    const compressedImage = canvas.toDataURL('image/jpeg', quality);
+                    downloadLink.href = compressedImage;
+                    downloadLink.style.display = 'block';
+                };
+                img.src = reader.result;
+            };
+            reader.readAsDataURL(imageFile);
+        });
+    </script>
+</body>
+</html>
